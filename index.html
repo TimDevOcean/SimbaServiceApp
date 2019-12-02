@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,500,500i,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,400i,500,500i,600&display=swap" rel="stylesheet">
+
+  <script src="js/jquery.js"></script>
+  <script type="text/javascript">
+
+  $(window).load(function() {
+        $(".loader").fadeOut("slow");
+  });
+
+    $(document).on("mobileinit", function(){
+     $.mobile.defaultPageTransition = "slide";
+    });
+
+
+    function showPassword(){
+      var pass = document.querySelector("#signup-form")["signup-pwd"];
+      if (pass.type === "password") {
+        pass.type = "text";
+      } else {
+        pass.type = "password";
+      }
+    }
+
+    function onDeviceReady() {
+      window.open = cordova.InAppBrowser.open;
+  }
+
+  </script>
+  <script src="js/jquery.mobile-1.4.5.js"></script>
+</head>
+<body onoffline="checkConnection();">
+
+
+  <!-- Blank -->
+    <div data-role="page" id="blank-page">
+
+        <div role="main" class="ui-content">
+
+        </div>
+    </div>
+
+
+<!-- Sign In page -->
+<div data-role="page" id="signin-page">
+
+    <div role="main" class="ui-content">
+      <div class="page-title">
+        <CENTER><h1>Sign In</h1><h5>Log into your account</h5></CENTER>
+      </div>
+      <div class="form-container">
+        <form id="signin-form">
+          <input id="semail" type="email" name="signin-email" placeholder="Email" />
+          <input id="spassword" type="password" name="signin-pwd" placeholder="Password" /><br>
+          <input type="submit" id="signin-btn" value="SIGN IN" />
+          <h6>Don't have an account? &nbsp;<a href="#signup-page" data-direction="reverse">Sign Up</a></h6>
+        </form>
+      </div>
+
+      <div id="si-dialog" class="dialog" data-role="popup" data-overlay-theme="b">
+      		<CENTER><h1></h1></CENTER>
+      	<div role="main" class="ui-content">
+          <h5></h5><br>
+          <a data-role="button" data-rel="back">OK</a>
+      	</div><!-- /content -->
+      </div>
+      <a href="#si-dialog" data-rel="popup" id="dialog-btn" data-position-to="window" data-transition="pop"></a>
+    </div>
+</div>
+
+
+
+<!-- Sign Up page -->
+<div data-role="page" id="signup-page">
+
+	<div role="main" class="ui-content">
+    <div class="page-title">
+      <CENTER><h1>Sign Up</h1><h5>Create an account</h5></CENTER>
+    </div>
+    <div class="form-container">
+      <form id="signup-form">
+        <input type="text" name="signup-name" placeholder="Your full name" />
+        <input type="email" name="signup-email" placeholder="Your email address" />
+        <input type="text" name="signup-phone" placeholder="Your phone number" />
+        <input type="password" name="signup-pwd" placeholder="Password" />
+        <input type="checkbox" name="checkpassword" onclick="showPassword();" /><i>Show Password</i><br><br>
+        <input type="submit" class="submit-btn"  value="SIGN UP" />
+        <h6>Already have an account? &nbsp;<a href="#signin-page">Sign In</a></h6>
+      </form>
+    </div>
+
+    <div id="su-dialog" class="dialog" data-role="popup" data-overlay-theme="b">
+        <CENTER><h1></h1></CENTER>
+      <div role="main" class="ui-content">
+        <h5></h5><br>
+        <a data-role="button" data-rel="back">OK</a>
+      </div><!-- /content -->
+    </div>
+    <a href="#su-dialog" data-rel="popup" id="dialog-btn" data-position-to="window" data-transition="pop"></a>
+	</div>
+</div>
+
+
+
+<!-- Dashboard -->
+<div data-role="page" id="dashboard">
+  <div data-role="panel" id="profile-panel" data-display="push">
+
+    <div class="panel-container">
+      <div class="panel-item">
+        <div class="user">
+          <img src="img/default-user-photo.png" class="user-photo">
+          <h5>Welcome</h5>
+          <div id="user-name"></div>
+          <a href="#profile-page">edit profile</a>
+        </div>
+      </div>
+      <div class="panel-item"><hr></div>
+      <div class="panel-item">
+        <div class="panel-menu">
+          <a href="#dashboard" data-ajax="false"><img class="panel-icon" src="img/dashboard-icon.png"><p>Dashboard</p></a><br>
+          <a href="#faq-page"><img class="panel-icon" src="img/support-icon.png"><p>Help & Support</p></a><br>
+          <a href="#sc-page"><img class="panel-icon" src="img/sc-icon2.png"><p>Service Centers</p></a><br>
+          <a href="#referral-dialog" data-rel="popup" id="dialog-btn" data-position-to="window" data-transition="pop"><img class="panel-icon" src="img/referral-icon.png"><p>Customer Referral</p></a><br>
+          <a href="#contact-page"><img class="panel-icon" src="img/contact-icon.png"><p>Contact Us</p></a><br>
+          <a href="" data-ajax="false" id="logout"><img class="panel-icon" src="img/logout-icon.png"><p>Log Out</p></a>
+        </div>
+      </div>
+    </div>
+
+    <div id="referral-dialog" class="dialog" data-role="popup" data-overlay-theme="b">
+        <CENTER><h1></h1></CENTER>
+      <div role="main" class="ui-content" style="padding:15px 50px;">
+        <h5>REFERRAL CODE</h5>
+        <CENTER><h1 id="referral-code" class="r-code"></h1></CENTER>
+        <CENTER><i style="color:red;font-size:10px;" class="copy-msg"></i></CENTER>
+        <button data-role="button" class="copy-btn">COPY</button>
+        <a data-role="button" data-rel="back" onclick="clearCopyMsg();">CLOSE</a>
+      </div><!-- /content -->
+    </div>
+    <a href="#referral-dialog" data-rel="popup" id="dialog-btn" data-position-to="window" data-transition="pop"></a>
+
+  </div><!-- /panel -->
+
+	<div data-role="header">
+    <a class="hamburger" href="#profile-panel"><img src="img/hamburger.png"></a>
+		<h1>Dashboard</h1>
+    <a class="hamburger" href="#profile-page"><img style="width:25px; padding:5px 5px 0 0;" src="img/default-user-photo.png"></a>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+    <div class="hello-msg">
+        <CENTER><img src="img/ss-icon-small.png" style="width:35px;"><h4>How may we help you today?</h4></CENTER>
+    </div>
+    <div class="grid-container">
+      <a href="#pr-page"><div class="grid-item"><img src="img/pr-icon.png"><br><h1>Product<br> Registration</h1></div></a>
+      <a href="#sr-page"><div class="grid-item"><img src="img/sr-icon.png"><br><h1>Service<br> Request</h1></div></a>
+      <a href="#bw-page"><div class="grid-item"><img src="img/bw-icon.png"><br><h1>Battery<br> Water Top Up</h1></div></a>
+      <a href="#ar-page"><div class="grid-item"><img src="img/ar-icon.png"><br><h1>AMC<br> Request</h1></div></a>
+      <a href="#feedback-page"><div class="grid-item"><img src="img/rate-icon.png"><br><h1>Give<br> Feedback</h1></div></a>
+      <a href="#faq-page"><div class="grid-item"><img src="img/faq-icon.png"><br><h1>FAQ<br> &nbsp;</h1></div></a>
+    </div>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position="fixed">
+
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+<!-- Product registration page -->
+<div data-role="page" id="pr-page">
+
+	<div data-role="header">
+    <a class="hamburger" href="#" data-direction="reverse" data-rel="back"><img src="img/back-icon.png"></a>
+		<h1>Product Registration</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+    <div class="form-container">
+      <form action="productregistration.php" method="POST" class="request-form" data-ajax="false">
+        <CENTER><h1>Warranty Registration</h1></CENTER>
+        <input type="hidden" name="username" value="">
+        <input type="hidden" name="useremail" value="">
+        <input type="hidden" name="usernumber" value="">
+          <div id="brand-container">
+            <select name="brand" id="brand" onchange="config();" required>
+              <option>Select Brand</option>
+              <option>Luminous</option>
+              <option>Genus</option>
+              <option>K-Star</option>
+              <option>Sollatek</option>
+            </select>
+          </div>
+
+          <select name="product" id="product" required>
+            <option>Select Product</option>
+          </select>
+
+          <select name="model" id="model">
+            <option>Select Model</option>
+          </select>
+
+          <select name="capacity" id="capacity">
+            <option>Select Capacity</option>
+          </select>
+
+        <input onfocus="(this.type='date')" onclick="(this.type='date')" onblur="(this.type='text')" name="date" placeholder="Date of purchase" required/>
+        <input type="text" name="serial" id="serial" placeholder="Product serial no." /><br>
+        <input class="submit-btn" type="submit" name="submit" value="SUBMIT" />
+      </form>
+
+      <div id="request-dialog" class="dialog" data-role="popup" data-overlay-theme="b">
+          <CENTER><h1></h1></CENTER>
+        <div role="main" class="ui-content">
+          <h5></h5><br>
+          <a data-role="button" data-rel="back">OK</a>
+        </div><!-- /content -->
+      </div>
+      <a href="#request-dialog" data-rel="popup" id="dialog-btn" data-position-to="window" data-transition="pop"></a>
+    </div>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position="fixed">
+
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+<!-- Service request page -->
+<div data-role="page" id="sr-page">
+
+	<div data-role="header">
+    <a class="hamburger" href="#" data-direction="reverse" data-rel="back"><img src="img/back-icon.png"></a>
+		<h1>Service Request</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+    <div class="form-container">
+      <form action="servicerequest.php" method="POST" class="request-form" data-ajax="false">
+        <CENTER><h1>Service Request</h1></CENTER>
+        <input type="hidden" name="username" value="">
+        <input type="hidden" name="useremail" value="">
+        <input type="hidden" name="usernumber" value="">
+        <div id="brand-container">
+          <select name="brand" required>
+            <option>Select Brand</option>
+            <option>Luminous</option>
+            <option>Genus</option>
+            <option>K-Star</option>
+            <option>Sollatek</option>
+          </select>
+        </div>
+
+        <select name="product" required>
+          <option>Select Product</option>
+          <option>AVR</option>
+          <option>Battery-SMF</option>
+          <option>Battery-Tubular</option>
+          <option>Multi Guards</option>
+          <option>Offline Inverter</option>
+          <option>Online UPS</option>
+          <option>Volt Guard</option>
+          <option>Volt Shield</option>
+        </select>
+        <textarea type="textarea" name="request" placeholder="Your Request"/></textarea><br>
+        <input class="submit-btn" type="submit" name="submit" value="SUBMIT" />
+      </form>
+    </div>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position="fixed">
+
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+<!-- Battery water top up page -->
+<div data-role="page" id="bw-page">
+
+	<div data-role="header">
+    <a class="hamburger" href="#" data-direction="reverse" data-rel="back"><img src="img/back-icon.png"></a>
+		<h1>Battery Water Top Up</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+    <div class="form-container">
+      <form action="watertopup.php" method="POST" class="request-form" data-ajax="false">
+        <CENTER><h1>Request an Appointment</h1></CENTER>
+        <input type="hidden" name="username" value="">
+        <input type="hidden" name="useremail" value="">
+        <input type="hidden" name="usernumber" value="">
+        <input onfocus="(this.type='date')" onclick="(this.type='date')" onblur="(this.type='text')" name="date" placeholder="Select Date" required/>
+        <input type="radio" name="time" value="Morning"> <div class="booktime">Morning (From 9am to 1pm)</div></br>
+        <input type="radio" name="time" value="Afternoon"><div class="booktime">Afternoon (From 1pm to 5pm)</div></br>
+        <input type="radio" name="time" value="Evening"><div class="booktime">Evening (From 5pm to 7pm)</div></br><br>
+        <input class="submit-btn" type="submit" name="submit" value="SUBMIT" />
+      </form>
+    </div>
+
+	<div data-role="footer" data-position="">
+
+	</div><!-- /footer -->
+</div>
+</div><!-- /page -->
+
+
+
+<!-- AMC request page -->
+<div data-role="page" id="ar-page">
+
+	<div data-role="header">
+    <a class="hamburger" href="#" data-direction="reverse" data-rel="back"><img src="img/back-icon.png"></a>
+		<h1>AMC Request</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+    <div class="form-container">
+      <form action="amcrequest.php" method="POST" class="request-form" data-ajax="false">
+        <CENTER><h1>AMC Request</h1></CENTER>
+        <input type="hidden" name="username" value="">
+        <input type="hidden" name="useremail" value="">
+        <input type="hidden" name="usernumber" value="">
+        <select name="brand" required>
+          <option>Select Brand</option>
+          <option>Luminous</option>
+          <option>Genus</option>
+          <option>K-Star</option>
+          <option>Sollatek</option>
+        </select>
+        <select name="product" required>
+          <option>Select Product</option>
+          <option>AVR</option>
+          <option>Battery-SMF</option>
+          <option>Battery-Tubular</option>
+          <option>Multi Guards</option>
+          <option>Offline Inverter</option>
+          <option>Online UPS</option>
+          <option>Volt Guard</option>
+          <option>Volt Shield</option>
+        </select>
+        <textarea type="textarea" name="request" placeholder="Your Request"/></textarea><br>
+        <input class="submit-btn" type="submit" name="submit" value="SUBMIT" />
+      </form>
+    </div>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position="fixed">
+
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+<!-- Track service request page -->
+<div data-role="page" id="ts-page">
+
+	<div data-role="header">
+    <a class="hamburger" href="#" data-direction="reverse" data-rel="back"><img src="img/back-icon.png"></a>
+		<h1>Track Service Request</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+    <div class="form-container">
+      <form action="trackticket.php" method="POST" class="request-form" data-ajax="false">
+        <CENTER><h1>Track Your Ticket Status</h1></CENTER>
+        <input type="text" name="rtn" placeholder="Related Ticket Number" />
+        <br>
+        <input class="submit-btn" type="submit" name="submit_btn" value="SUBMIT" />
+      </form>
+    </div>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position="fixed">
+
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+<!-- FAQ page -->
+<div data-role="page" id="faq-page">
+
+	<div data-role="header">
+    <a class="hamburger" href="#" data-direction="reverse" data-rel="back"><img src="img/back-icon.png"></a>
+		<h1>FAQ</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+    <!-- General FAQ -->
+    <span>General</span>
+    <p></p>
+    <button class="accordion" data-role="none">How long can I operate my inverter?</button>
+      <div class="panel">
+        <p>The runtime (i.e., amount of time that the inverter will power connected electronics)
+          depends on the amount of battery power available and the load that it is supporting.
+          In general, as you increase the load (e.g., plug in more equipment) your runtime will decrease.</p>
+      </div>
+
+      <button class="accordion" data-role="none">What’s the difference between an inverter and Generator/PHCN?</button>
+      <div class="panel">
+        <p>An inverter simply converts DC (battery) power into AC power and then
+          passes it along to connected equipment. A Generator/PHCN are mostly AC power
+          source that supply AC power to AC loads; In the case of a power outage,
+          the inverter will automatically switch to battery power to provide
+          power to connected equipment, provided it is on ON-Mode.</p>
+      </div>
+
+      <button class="accordion" data-role="none">How fast will my inverter respond to a power <br>outage?</button>
+      <div class="panel">
+        <p>During an outage, the inverter will transfer from utility {PHCN} to battery power in
+          less than 10 milliseconds for an inverter/home UPS and 0 milliseconds for the online UPS.</p>
+      </div>
+
+      <button class="accordion" data-role="none">Can I use a Stabilizer/AVR at the Output of my inverter?</button>
+      <div class="panel">
+        <p>Yes. A stabilizer/Automatic Voltage Regulator {AVR} can be used on the output of an
+          Inverter provided the Stabilizer/AVR Capacity is less than the Inverter capacity.</p>
+      </div>
+
+      <button class="accordion" data-role="none">How is an inverter different from an Online UPS?</button>
+      <div class="panel">
+        <p>Inverters are with change-over time {Time gap while switching from one
+          power source to another} while the Online UPS do not have change-over time.</p>
+      </div>
+
+
+      <!-- Features FAQ -->
+      <span>Features</span>
+      <p></p>
+      <button class="accordion" data-role="none">What’s the difference between inductive and resistive load?</button>
+        <div class="panel">
+          <p>A resistive load does not require extra power upon startup, whereas
+            an inductive load experiences an inrush current upon startup
+            and requires more power during the first few seconds/cycles of startup.</p>
+        </div>
+
+        <button class="accordion" data-role="none">What’s the difference between startup and continuous load?</button>
+        <div class="panel">
+          <p>Many appliances and electronics draw a lot more power on start-up
+            than they do during continuous use. Because inverters must be able to
+            handle these “peak surge” requirements, the start-up power requirement
+            must be considered when recommending an inverter.</p>
+        </div>
+
+        <button class="accordion" data-role="none">Why choose a pure sine wave inverter?</button>
+        <div class="panel">
+          <p>Sine wave power allows your equipment to run cooler, last longer and
+            operate without the malfunctions and reduced performance caused by
+            substandard power. Sine wave power also ensures maximum compatibility
+            with sensitive electronics like computers, network devices and audio/video equipment.
+            Many devices require sine wave power, including variable-speed power tools and
+            computers with active PFC power supplies.</p>
+        </div>
+
+
+        <!-- Applications FAQ -->
+        <span>Applications</span>
+        <p></p>
+        <button class="accordion" data-role="none">What appliances can an inverter run?</button>
+          <div class="panel">
+            <p>Smaller appliances can be used with an inverter, such as TVs,
+              Sound systems, Bulbs, Fans etc. appliance to be connected to an
+              Inverter is based on the Appliance power rating and the Inverter capacity</p>
+          </div>
+
+          <button class="accordion" data-role="none">How are my batteries connected?</button>
+          <div class="panel">
+            <p>Inverter Batteries are usually connected in series to make-up a
+              Battery Bank, as shown below; Example: Two 12-volt batteries wired
+              in series with one another will create a total of 24 volts. The failure of
+              one Battery may affect the back-up time or even shutdown the Inverter completely.
+            </p>
+              <img src="img/batteryseries.jpg" />
+          </div>
+
+          <button class="accordion" data-role="none">Are specific inverters available for
+            Medical/IT/Communication/Aviation Equipments?</button>
+          <div class="panel">
+            <p>Yes. Simba Service offers Online UPS that are 0Millisecond change-over time;
+              with this feature they can conveniently support highly
+              sensitive Medical / IT / Communication / Aviation Equipments.</p>
+          </div>
+
+
+          <!-- Battery Maintenance FAQ -->
+          <span>Battery Maintenance Tips</span>
+          <p></p>
+          <button class="accordion" data-role="none">VRLA ( SMF ) battery maintenance tips</button>
+            <div class="panel">
+              <p>Battery must never be installed in a closed container.
+                It requires proper ventilation for cooling
+                Let the inverter deep charge batteries fully with power button OFF daily
+                If the unit is to be idle for more than 24 hrs, ensure the batteries are fully
+                charged and turn OFF front switch to avoid battery getting discharged
+                Do not allow battery to get deep discharged. It will reduce the life of the battery.
+                Use energy saving bulbs for all your lighting powered by the inverter
+                Appliances with heating elements such as Microwave, Water heater, Iron box etc
+                are not good for the health of battery. Avoid connecting them to the inverter
+                Check the input and out voltage of the inverter regularly.</p>
+            </div>
+
+            <button class="accordion" data-role="none">Tubular battery maintenance tips</button>
+            <div class="panel">
+              <p>Check Electrolyte level in the battery periodically. If the level is reduced,
+                top up with demineralized water.
+                Clean battery terminals if there is sulphation. Apply petroleum
+                jelly on the terminal.
+                Never keep the battery under direct sunlight.</p>
+            </div>
+
+
+            <!-- Troubleshooting FAQ -->
+            <span>Troubleshooting</span>
+            <p></p>
+            <button class="accordion" data-role="none">Why do my batteries go dead
+              when I use <br>the inverter in inverter mode?</button>
+              <div class="panel">
+                <p>In inverter mode, with no input supply, the inverter no longer charges the
+                  batteries, but instead depletes their battery power to supply power to
+                  connected equipment.</p>
+              </div>
+
+              <button class="accordion" data-role="none">Why is my Inverter ON yet not supplying output?</button>
+              <div class="panel">
+                <p> • Check the position of rotary switch at the back panel.<br>
+                    • Check if over temp shutdown protection is displayed on the LCD.
+                    If it is allow the unit to cool down.<br>
+                    • Check if low battery protection is displayed on the LCD.
+                    If it is allow the battery to charge.<br>
+                    • Check if overload/short circuit protection is displayed on the LCD.
+                    If it is reduce load and switch OFF/ON front panel switch.<br>
+                    • Check wiring for short-circuit.<br>
+                    • If problem persist, put the inverter on By-Pass then our service
+                    Engineer need to visit the site.</p>
+              </div>
+
+              <button class="accordion" data-role="none">Why is Mains power coming
+                into the Inverter yet Inverter shows MCB trip on its LCD Panel?</button>
+              <div class="panel">
+                <p> • If inverter is on switch inverter off from the front Switch.<br>
+                    • Switch off Main Circuit-Breaker from the rear-Panel of the inverter {behind the inverter}
+                    <br>
+                    • Switch on Main Circuit-Breaker from the rear-Panel of the inverter {behind the inverter}.<br>
+                    • Switch on the inverter and switch it off again.<br>
+                    • Finally, switch on the inverter from the front switch. If problem persist,
+                    put the inverter on By-Pass then our service Engineer need to visit the site.<br>
+                </p>
+              </div>
+
+              <button class="accordion" data-role="none">Why my Inverter buzzer is keeps beeping
+                with ‘InverterTemp: High’ message <br>displayed on the LCD?</button>
+              <div class="panel">
+                <p> • Check the fan at the back panel, if not working shutdown inverter and allow it to cool.
+                  If inverter is on switch inverter off from the front Switch.<br>
+                    • Switch off Main Circuit-Breaker from the rear-Panel of the inverter {behind the inverter}.
+                    <br>
+                    • Switch off Battery Circuit-Breaker from the rear-Panel of the inverter {behind the inverter}.<br>
+                    • Turn the Red Rotary Switch in the clockwise direction with the white stripe on the
+                    Nob pointing to By-Pass or figure-2 as indicated on the Rotary
+                    Switch in the rear-panel of the inverter.<br>
+                    • If problem persist, put the inverter on By-Pass
+                    then our service Engineer need to visit the site.<br>
+                </p>
+              </div>
+
+              <button class="accordion" data-role="none">How do I put my inverter on By-Pass?</button>
+              <div class="panel">
+                <p> • If inverter is on, switch inverter off from the front Switch.<br>
+                    • Switch off Main Circuit-Breaker from the rear-Panel of the inverter {behind the inverter}.
+                    <br>
+                    • Switch off Battery Circuit-Breaker from the rear-Panel of the inverter {behind the inverter}.<br>
+                    • Turn the Rotary Switch in a clockwise direction with the white stripe on
+                    the Nob pointing to By-Pass or figure-2 as indicated on the Rotary Switch in
+                    the rear-panel of the inverter.<br>
+                </p>
+              </div>
+
+              <button class="accordion" data-role="none">Display {LCD} is not indicating any parameter {Blank LCD}?</button>
+              <div class="panel">
+                <p> • If inverter is on switch inverter off from the front Switch.<br>
+                    • Switch off Main Circuit-Breaker from the rear-Panel of the inverter {behind the inverter}.
+                    <br>
+                    • Switch off Battery Circuit-Breaker from the rear-Panel of the inverter {behind the inverter}.<br>
+                    • Switch on Battery Circuit-Breaker from the rear-Panel of the inverter {behind the inverter}.<br>
+                    • Switch on Main Circuit-Breaker from the rear-Panel of the inverter {behind the inverter}.
+                    <br>
+                    • Switch on the inverter and switch it off again from the front switch.<br>
+                    • Finally, switch on the inverter from the front switch.<br>
+                </p>
+              </div>
+
+              <button class="accordion" data-role="none">Inverter not working (Dead).What are the probable causes?</button>
+                <div class="panel">
+                  <p>Check front switch. It might be OFF
+                      Battery connection may be Open or Loose. Tighten the same
+                      Check DC fuse at the back side of the Inverter which might have blown
+                      If all above are Ok, call for service assistance.</p>
+                </div>
+
+                <button class="accordion" data-role="none">Why no Output from Inverter although the Inverter is ON?</button>
+                  <div class="panel">
+                    <p>Output plug may be loose or open
+                      Neutral wire of Inverter may be open or loose
+                      Check by connecting a lamp to the O/P of the inverter. If lamp glows,
+                      Inverter is Ok. Problem is with the netral of I/P connection
+                      Check Rotory switch at the back.
+                      If over temperature shut down protection is displayed on the screen,
+                      allow inverter to cool down
+                      If problem persists, put the Rotary switch on bypass and call for
+                      service engineer visit</p>
+                  </div>
+
+                  <button class="accordion" data-role="none">Why my Inverter is showing 'Overload Protection'</button>
+                    <div class="panel">
+                      <p>Excessive load may be connected to the inverter. Reduce the
+                        load by switching of some of the electrical loads
+                        Overload protection MCB at the back of the inverter might be tripped
+                        If all above are Ok, call for service assistance.</p>
+                    </div>
+
+                    <button class="accordion" data-role="none">Why my Inverter is giving 'No Load' indication</button>
+                      <div class="panel">
+                        <p>Reset ON/OFF switch</p>
+                      </div>
+
+                      <button class="accordion" data-role="none">Why my Inverter is not charging battery
+                        eventhough the Generator is ON</button>
+                        <div class="panel">
+                          <p>Check position of the rotory switch at the back panel.
+                            If it is in OFF position, place it in Output position
+                            Check position of the main circuit breaker. If it is in OFF
+                            position, place it in ON position
+                            Check input parameters on the LCD display. Input voltage
+                            should be between 190 &
+                            240v while the frequency should be between 48 & 53 Hz
+                            If input parameters are out of the aforementioned range,
+                            Generator is faulty and it needs to be serviced.</p>
+                        </div>
+
+      <script>
+          var acc = document.getElementsByClassName("accordion");
+          var i;
+
+          for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+              this.classList.toggle("active");
+              var panel = this.nextElementSibling;
+              if (panel.style.maxHeight){
+                panel.style.maxHeight = null;
+              } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+              }
+            });
+          }
+      </script>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position="">
+
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+
+<!-- Profile page -->
+<div data-role="page" id="profile-page">
+
+	<div data-role="header">
+    <a class="hamburger" href="#" data-direction="reverse" data-rel="back"><img src="img/back-icon.png"></a>
+		<h1>EDIT PROFILE</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+    <img src="img/default-user-photo-2.png" class="user-photo">
+    <div class="form-container">
+      <form id="profile-form">
+        <label>Display name:</label>
+        <input type="text" name="profile-name" placeholder="Your name" value="" />
+        <label>Email:</label>
+        <input type="email" name="profile-email" placeholder="Your email address" />
+        <label>Phone number:</label>
+        <input type="number" name="profile-phone" placeholder="Your phone number" /><br>
+        <input type="submit" class="save-btn"  value="SAVE" /><br>
+      </form>
+    </div>
+
+    <div id="p-dialog" class="dialog" data-role="popup" data-overlay-theme="b">
+        <CENTER><h1></h1></CENTER>
+      <div role="main" class="ui-content">
+        <h5></h5><br>
+        <a data-role="button" data-rel="back">OK</a>
+      </div><!-- /content -->
+    </div>
+    <a href="#p-dialog" data-rel="popup" id="dialog-btn" data-position-to="window" data-transition="pop"></a>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position="fixed">
+
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+<!-- Feedback page -->
+<div data-role="page" id="feedback-page">
+
+	<div data-role="header">
+    <a class="hamburger" href="#" data-direction="reverse" data-rel="back"><img src="img/back-icon.png"></a>
+		<h1>Feedback</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+    <div class="form-container">
+      <form action="feedback.php" method="POST" class="request-form" data-ajax="false">
+        <CENTER><h1>Customer Feedback</h1></CENTER>
+        <input type="hidden" name="username" value="">
+        <input type="hidden" name="useremail" value="">
+        <input type="hidden" name="usernumber" value="">
+        <input type="text" name="rtn" placeholder="Ticket Number" required/>
+        <textarea name="feedback" placeholder="Your message"></textarea>
+        <CENTER><h1>Rate Us</h1></CENTER>
+        <div class="rate" data-role="none">
+          <input data-role="none" type="radio" id="star5" name="rate" value="5" />
+          <label data-role="none" for="star5" title="text">5 stars</label>
+          <input data-role="none" type="radio" id="star4" name="rate" value="4" />
+          <label data-role="none" for="star4" title="text">4 stars</label>
+          <input data-role="none" type="radio" id="star3" name="rate" value="3" />
+          <label data-role="none" for="star3" title="text">3 stars</label>
+          <input data-role="none" type="radio" id="star2" name="rate" value="2" />
+          <label data-role="none" for="star2" title="text">2 stars</label>
+          <input data-role="none" type="radio" id="star1" name="rate" value="1" />
+          <label data-role="none" for="star1" title="text">1 star</label>
+        </div>
+        <input class="submit-btn" type="submit" name="submit" value="SEND" />
+      </form>
+    </div>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position="fixed">
+
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+<!-- Contact page -->
+<div data-role="page" id="contact-page">
+
+	<div data-role="header">
+    <a class="hamburger" href="#" data-direction="reverse" data-rel="back"><img src="img/back-icon.png"></a>
+		<h1>Contact Us</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+    <div class="contact-container">
+      <a href="tel:07001112233">
+        <div class="contact-item">
+          <img src="img/phone-icon.png"><h2>0700-111-2233 &nbsp; ( 24hr Care )</h2>
+        </div>
+      </a>
+      <a href="mailto:service@simbaservice.com.ng">
+      <div class="contact-item">
+        <img src="img/email-icon.png"><h2>service@simbaservice.com.ng</h2>
+      </div>
+      </a>
+      <!-- <a href="#sc-page">
+        <div class="contact-item">
+          <img src="img/sc-icon.png"><h2>Service Centers</h2>
+        </div>
+      </a> -->
+      <div class="contact-item" onclick="function escalate(){document.querySelector('#escalate-form').classList.toggle('hide')} escalate();">
+        <img src="img/escalate-icon.png"><h2>Escalate your Grievance</h2>
+      </div>
+      <div id="escalate-form" class="form-container hide">
+        <form action="tomanagement.php" method="POST" class="request-form" data-ajax="false">
+          <input type="hidden" name="username" value="">
+          <input type="hidden" name="useremail" value="">
+          <input type="hidden" name="usernumber" value="">
+          <textarea name="message" placeholder="Your message"></textarea>
+          <input class="submit-btn" type="submit" name="submit" value="SEND" />
+        </form>
+      </div>
+
+    </div>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position="fixed">
+
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+<!-- Service Centers page -->
+<div data-role="page" id="sc-page">
+
+	<div data-role="header">
+    <a class="hamburger" href="#" data-direction="reverse" data-rel="back"><img src="img/back-icon.png"></a>
+		<h1>Service Centers</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+    <div class="contact-container">
+        <div class="contact-item">
+          <div class="sc-title">Surulere, Lagos</div>
+          <div class="sc-text">77,79, Eric Moore Road,<br> Surulere, Lagos.</div>
+        </div>
+
+        <div class="contact-item">
+          <div class="sc-title">Ibadan, Oyo</div>
+          <div class="sc-text">TCTC Compound, Idiope Eleyele, <br>Ibadan, Oyo State.</div>
+        </div>
+
+        <div class="contact-item">
+          <div class="sc-title">Ikeja, Lagos</div>
+          <div class="sc-text">52, Morrison Crescent, Oregun Industrial area,<br> Oregun, Ikeja, Lagos.</div>
+        </div>
+
+        <div class="contact-item">
+          <div class="sc-title">Yola, Adamawa</div>
+          <div class="sc-text">No. 30, Atiku Abubakar Road,<br> Jimeta – Yola, Adamawa State.</div>
+        </div>
+
+        <div class="contact-item">
+          <div class="sc-title">Kaduna, Kaduna</div>
+          <div class="sc-text">No.2, Junction Road, Opp. Ishaku Hospital,<br> Next to FIRS office, Kaduna.</div>
+        </div>
+
+        <div class="contact-item">
+          <div class="sc-title">Kano, Kano</div>
+          <div class="sc-text">146B, Murtala Muhammed Way,<br> Next to Access bank, Kano.</div>
+        </div>
+
+        <div class="contact-item">
+          <div class="sc-title">Maiduguri, Borno</div>
+          <div class="sc-text">10 Busari Road, <br>Opposite Maiduguri Flour mills, Maiduguri.</div>
+        </div>
+
+        <div class="contact-item">
+          <div class="sc-title">Enugu</div>
+          <div class="sc-text">Amaigbo Lane Uwani, Behind Union Bank,<br> Ziks Avenue, Enugu.</div>
+        </div>
+
+        <div class="contact-item">
+          <div class="sc-title">Port Harcourt</div>
+          <div class="sc-text">Plot.No.135, Trans-Amadi Industries Layout,<br> Ogidigba, Port-Harcourt.</div>
+        </div>
+
+        <div class="contact-item">
+          <div class="sc-title">Abuja</div>
+          <div class="sc-text">N0 12A, Alexander Crescent,<br> Bannex, Wuse -2, Abuja.</div>
+        </div>
+
+        <div class="contact-item">
+          <div class="sc-title">Sokoto</div>
+          <div class="sc-text">Plot 8-10, Western Bypass,<br> Opp. Total Filling station, Sokoto.</div>
+        </div>
+    </div>
+
+    </div>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position="fixed">
+
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+
+<!-- Welcome -->
+  <div data-role="page" id="welcome-page">
+
+      <div role="main" class="ui-content">
+        <img src="img/simba-service-logo.png"><br>
+        <div class="loader"></div>
+      </div>
+  </div>
+
+
+<script src="js/index.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
